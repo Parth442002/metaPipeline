@@ -1,30 +1,24 @@
 import os
 import subprocess
+from fastapi import UploadFile
 from connectors.celery import celery
+from functions.saveUploadFile import saveUploadFile
+from functions.createOutputFileName import createOutputFilePath
 
 
 @celery.task
-def extract_audio(input_video_path, codec="mp3", bitrate="192k"):
+def extract_audio(video_path: str, codec: str = "mp3", bitrate: str = "192k"):
     """
     Extract audio from a video file using ffmpeg.
     """
-    output_dir = "./temp/output"
-
-    # Ensure the directory exists
-    os.makedirs(output_dir, exist_ok=True)
-
     # Extract the video file name from the path
-    video_file_name = os.path.splitext(os.path.basename(input_video_path))[0]
-
+    video_file_name = os.path.splitext(os.path.basename(video_path))[0]
     # Generate output_audio_path based on the original video file name
-    output_audio_path = os.path.join(
-        output_dir, f"{video_file_name}_audio_extracted.mp3"
-    )
-
+    output_audio_path = createOutputFilePath(video_file_name, "audio")
     command = [
         "ffmpeg",
         "-i",
-        input_video_path,
+        video_path,
         "-vn",  # Disable video recording
         "-acodec",
         codec,
