@@ -36,8 +36,10 @@ async def get_task_result(task_id: str):
         if task_result.successful():
             output_audio = task_result.result
             filename = os.path.basename(output_audio)
+            with open(output_audio, "rb") as audio_file:
+                content = audio_file.read()
             return Response(
-                content=output_audio,
+                content=content,
                 media_type="audio/mp3",
                 headers={
                     "Content-Disposition": f"attachment;filename={filename}",
@@ -82,8 +84,10 @@ async def get_watermarked_result(task_id: str):
         if task_result.successful():
             output_video = task_result.result
             filename = os.path.basename(output_video)
+            with open(output_video, "rb") as video_file:
+                content = video_file.read()
             return Response(
-                content=output_video,
+                content=content,
                 media_type="video/mp4",
                 headers={
                     "Content-Disposition": f"attachment;filename={filename}",
