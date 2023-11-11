@@ -4,3 +4,6 @@ data
 .DS_Store
 .env
 temp
+Dockerfile
+.dockerignore
+upsplit_key.pem
