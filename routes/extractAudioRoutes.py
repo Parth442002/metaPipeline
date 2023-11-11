@@ -40,6 +40,9 @@ async def extractAudioRoute(
     bitrate: str = "192k",
 ):
     video_path = saveUploadFile(video)
+    import pdb
+
+    pdb.set_trace()
     # Call the Celery task asynchronously
     task = extractAudio.apply_async(
         args=[email, video_path], kwargs={"codec": codec, "bitrate": bitrate}
