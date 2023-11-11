@@ -13,9 +13,8 @@ from connectors.database import get_db, ExtractionModel, UserModel
 
 router = APIRouter()
 
-# Security
 
-
+# ? All User Audio Extractions
 @router.get("/")
 async def get_user_extraction_models(
     email: UserModel = Depends(get_current_user),
@@ -25,6 +24,28 @@ async def get_user_extraction_models(
         # Fetch ExtractionModels related to the current user
         extraction_models = db.query(ExtractionModel).filter_by(user_email=email).all()
         return extraction_models
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
+    finally:
+        db.close()
+
+
+# ? Individual User Audio Extraction
+@router.get("/{extraction_id}")
+async def get_single_extraction(
+    extraction_id: int,
+    email: UserModel = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    try:
+        extraction = (
+            db.query(ExtractionModel)
+            .filter_by(id=extraction_id, user_email=email)
+            .first()
+        )
+        if extraction is None:
+            raise HTTPException(status_code=404, detail="Extraction not found")
+        return extraction
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
     finally:
