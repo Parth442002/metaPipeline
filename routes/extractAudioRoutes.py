@@ -59,7 +59,7 @@ async def get_task_result(task_id: str):
     if task_result.ready():
         if task_result.successful():
             output_audio = task_result.result
-            if output_audio is not None:
+            if output_audio and os.path.exists(output_audio):
                 filename = os.path.basename(output_audio)
                 with open(output_audio, "rb") as audio_file:
                     content = audio_file.read()
