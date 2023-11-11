@@ -60,18 +60,21 @@ async def resultRoute(task_id: str):
     if task_result.ready():
         if task_result.successful():
             output_video = task_result.result
-            filename = os.path.basename(output_video)
-            with open(output_video, "rb") as video_file:
-                content = video_file.read()
-            return Response(
-                content=content,
-                media_type="video/mp4",
-                headers={
-                    "Content-Disposition": f"attachment;filename={filename}",
-                    "Access-Control-Expose-Headers": "Content-Disposition",
-                },
-            )
+            if output_video is not None:
+                filename = os.path.basename(output_video)
+                with open(output_video, "rb") as audio_file:
+                    content = audio_file.read()
+                return Response(
+                    content=content,
+                    media_type="audio/mp3",
+                    headers={
+                        "Content-Disposition": f"attachment;filename={filename}",
+                        "Access-Control-Expose-Headers": "Content-Disposition",
+                    },
+                )
+            else:
+                return {"message": "Audio extraction failed or file not found"}
         else:
-            return {"message": "Watermarking failed"}
+            return {"message": "Audio extraction task failed"}
     else:
         return {"message": "Task is still in progress"}

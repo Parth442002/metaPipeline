@@ -59,18 +59,21 @@ async def get_task_result(task_id: str):
     if task_result.ready():
         if task_result.successful():
             output_audio = task_result.result
-            filename = os.path.basename(output_audio)
-            with open(output_audio, "rb") as audio_file:
-                content = audio_file.read()
-            return Response(
-                content=content,
-                media_type="audio/mp3",
-                headers={
-                    "Content-Disposition": f"attachment;filename={filename}",
-                    "Access-Control-Expose-Headers": "Content-Disposition",
-                },
-            )
+            if output_audio is not None:
+                filename = os.path.basename(output_audio)
+                with open(output_audio, "rb") as audio_file:
+                    content = audio_file.read()
+                return Response(
+                    content=content,
+                    media_type="audio/mp3",
+                    headers={
+                        "Content-Disposition": f"attachment;filename={filename}",
+                        "Access-Control-Expose-Headers": "Content-Disposition",
+                    },
+                )
+            else:
+                return {"message": "Audio extraction failed or file not found"}
         else:
-            return {"message": "Audio extraction failed"}
+            return {"message": "Audio extraction task failed"}
     else:
         return {"message": "Task is still in progress"}
