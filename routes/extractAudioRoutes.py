@@ -3,12 +3,14 @@ from fastapi import File, UploadFile, BackgroundTasks
 from fastapi.responses import Response
 from dotenv import load_dotenv
 import os
+from typing import List
 
 load_dotenv()
 # Local Imports
 from utils.auth import *
 from processors.extractAudio import extractAudio
 from functions.saveUploadFile import saveUploadFile
+from connectors.database import get_db, ExtractionModel, UserModel
 
 router = APIRouter()
 
@@ -17,8 +19,24 @@ SECRET_KEY = os.environ["JWT_SECRET_KEY"]
 ALGORITHM = os.environ["ALGORITHM"]
 
 
+@router.get("/")
+async def get_user_extraction_models(
+    email: UserModel = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    try:
+        # Fetch ExtractionModels related to the current user
+        extraction_models = db.query(ExtractionModel).filter_by(user_email=email).all()
+        return extraction_models
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
+    finally:
+        db.close()
+
+
 @router.post("/")
-async def start_audio_extraction(
+async def extractAudioRoute(
+    email: str = Depends(get_current_user),
     video: UploadFile = File(...),
     background_tasks: BackgroundTasks = BackgroundTasks(),
     codec: str = "mp3",
@@ -27,7 +45,7 @@ async def start_audio_extraction(
     video_path = saveUploadFile(video)
     # Call the Celery task asynchronously
     task = extractAudio.apply_async(
-        args=[video_path], kwargs={"codec": codec, "bitrate": bitrate}
+        args=[email, video_path], kwargs={"codec": codec, "bitrate": bitrate}
     )
     return {
         "message": f"Audio extraction task started. Task ID: {task.id}",
