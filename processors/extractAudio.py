@@ -40,6 +40,10 @@ def extractAudio(
     db.add(extraction_model)
     db.commit()
     try:
+        if not os.path.isfile(video_path):
+            print(f"Error: Video file not found at {video_path}")
+            return None
+
         subprocess.run(command, check=True)
         print(f"Audio extracted successfully and saved at: {output_audio_path}")
 

@@ -3,7 +3,6 @@ from fastapi import File, UploadFile, BackgroundTasks
 from fastapi.responses import Response
 from dotenv import load_dotenv
 import os
-from typing import List
 
 load_dotenv()
 # Local Imports
@@ -15,8 +14,6 @@ from connectors.database import get_db, ExtractionModel, UserModel
 router = APIRouter()
 
 # Security
-SECRET_KEY = os.environ["JWT_SECRET_KEY"]
-ALGORITHM = os.environ["ALGORITHM"]
 
 
 @router.get("/")
@@ -59,9 +56,6 @@ async def get_task_result(task_id: str):
     if task_result.ready():
         if task_result.successful():
             output_audio = task_result.result
-            import pdb
-
-            pdb.set_trace()
             if output_audio and os.path.exists(output_audio):
                 filename = os.path.basename(output_audio)
                 with open(output_audio, "rb") as audio_file:
