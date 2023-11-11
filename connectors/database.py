@@ -49,7 +49,9 @@ class UserModel(Base):
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String, unique=True, index=True)
     password = Column(String)
+
     audio_extractions = relationship("ExtractionModel", back_populates="user")
+    watermarks = relationship("WatermarkModel", back_populates="user")
 
 
 class ExtractionModel(Base):
@@ -57,12 +59,36 @@ class ExtractionModel(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     user_email = Column(String, ForeignKey("users.email"), index=True)
+    video_path = Column(String)
+    bitrate = Column(String)
+    codec = Column(String)
+    # Meta Data
     start_time = Column(DateTime(timezone=True), server_default=func.now())
     end_time = Column(DateTime(timezone=True))
     status = Column(String, default="Processing")
-    bitrate = Column(String)
-    codec = Column(String)
     task_id = Column(String, unique=True, index=True)
+    # When Success
     storage_link = Column(String, nullable=True)
-
+    local_link = Column(String, nullable=True)
     user = relationship("UserModel", back_populates="audio_extractions")
+
+
+class WatermarkModel(Base):
+    __tablename__ = "watermarks"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_email = Column(String, ForeignKey("users.email"), index=True)
+    video_path = Column(String)
+    watermark_path = Column(String)
+    position = Column(String)
+
+    task_id = Column(String, unique=True, index=True)
+    start_time = Column(DateTime(timezone=True), server_default=func.now())
+    end_time = Column(DateTime(timezone=True))
+    status = Column(String, default="Processing")
+    # Storage Links
+    storage_link = Column(String, nullable=True)
+    local_link = Column(String, nullable=True)
+
+    # Define a relationship with the User model
+    user = relationship("UserModel", back_populates="watermarks")

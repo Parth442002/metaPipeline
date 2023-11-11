@@ -33,6 +33,7 @@ def extractAudio(
     extraction_model = ExtractionModel(
         user_email=email,
         bitrate=bitrate,
+        video_path=video_path,
         codec=codec,
         task_id=str(current_task.request.id),
     )
@@ -50,6 +51,7 @@ def extractAudio(
         extraction_model.end_time = datetime.utcnow()
         extraction_model.status = "Success"
         extraction_model.storage_link = s3_object_name
+        extraction_model.local_link = output_audio_path
         db.commit()
 
         return output_audio_path

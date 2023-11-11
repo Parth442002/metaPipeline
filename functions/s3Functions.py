@@ -2,9 +2,11 @@ from botocore.exceptions import NoCredentialsError
 from connectors.storage import S3, S3_BUCKET_NAME
 
 
-def generate_s3_object_name(task_id: str):
-    # You can customize the S3 object name based on your requirements
-    return f"audio_files/{task_id}.mp3"
+def generate_s3_object_name(task_id: str, file_type: str = "audio_files"):
+    if file_type == "audio_files":
+        return f"{file_type}/{task_id}.mp3"
+    elif file_type == "video_files":
+        return f"{file_type}/{task_id}.mp4"
 
 
 def upload_file_to_s3(file_path: str, object_name: str):

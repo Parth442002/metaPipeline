@@ -9,16 +9,29 @@ load_dotenv()
 from utils.auth import *
 from processors.addWatermark import addWatermark
 from functions.saveUploadFile import saveUploadFile
+from connectors.database import WatermarkModel, get_db
 
 router = APIRouter()
 
-# Security
-SECRET_KEY = os.environ["JWT_SECRET_KEY"]
-ALGORITHM = os.environ["ALGORITHM"]
+
+@router.get("/")
+async def allWatermarks(
+    email: UserModel = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    try:
+        # Fetch ExtractionModels related to the current user
+        watermark_models = db.query(WatermarkModel).filter_by(user_email=email).all()
+        return watermark_models
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
+    finally:
+        db.close()
 
 
 @router.post("/")
-async def start_watermarking(
+async def waterMarkingRoute(
+    email: str = Depends(get_current_user),
     video: UploadFile = File(...),
     watermark: UploadFile = File(...),
     background_tasks: BackgroundTasks = BackgroundTasks(),
@@ -26,10 +39,10 @@ async def start_watermarking(
 ):
     video_path = saveUploadFile(video)
     watermark_path = saveUploadFile(watermark)
-
     # Call the Celery task asynchronously
     task = addWatermark.apply_async(
         args=[
+            email,
             video_path,
             watermark_path,
         ],
@@ -42,7 +55,7 @@ async def start_watermarking(
 
 
 @router.get("/result/{task_id}")
-async def get_watermarked_result(task_id: str):
+async def resultRoute(task_id: str):
     task_result = addWatermark.AsyncResult(task_id)
     if task_result.ready():
         if task_result.successful():
