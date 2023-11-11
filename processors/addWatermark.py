@@ -5,7 +5,7 @@ import os
 
 
 @celery.task
-def add_watermark(video_path: str, watermark_path: str, position="bottom_right"):
+def addWatermark(video_path: str, watermark_path: str, position="bottom_right"):
     video_file_name = os.path.splitext(os.path.basename(video_path))[0]
     output_video_path = createOutputFilePath(video_file_name, "video")
 

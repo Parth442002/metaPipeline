@@ -1,7 +1,6 @@
 import os
 from datetime import datetime, timedelta
 from connectors.celery import celery
-from celery.schedules import crontab
 
 
 # Delete Files which are 30 minutes old

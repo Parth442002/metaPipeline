@@ -1,13 +1,11 @@
 import os
 import subprocess
-from fastapi import UploadFile
 from connectors.celery import celery
-from functions.saveUploadFile import saveUploadFile
 from functions.createOutputFileName import createOutputFilePath
 
 
 @celery.task
-def extract_audio(video_path: str, codec: str = "mp3", bitrate: str = "192k"):
+def extractAudio(video_path: str, codec: str = "mp3", bitrate: str = "192k"):
     """
     Extract audio from a video file using ffmpeg.
     """

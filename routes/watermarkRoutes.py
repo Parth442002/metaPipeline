@@ -6,9 +6,8 @@ import os
 
 load_dotenv()
 # Local Imports
-from connectors.database import get_db
 from utils.auth import *
-from processors.watermark import add_watermark
+from processors.addWatermark import addWatermark
 from functions.saveUploadFile import saveUploadFile
 
 router = APIRouter()
@@ -29,7 +28,7 @@ async def start_watermarking(
     watermark_path = saveUploadFile(watermark)
 
     # Call the Celery task asynchronously
-    task = add_watermark.apply_async(
+    task = addWatermark.apply_async(
         args=[
             video_path,
             watermark_path,
@@ -44,7 +43,7 @@ async def start_watermarking(
 
 @router.get("/result/{task_id}")
 async def get_watermarked_result(task_id: str):
-    task_result = add_watermark.AsyncResult(task_id)
+    task_result = addWatermark.AsyncResult(task_id)
     if task_result.ready():
         if task_result.successful():
             output_video = task_result.result

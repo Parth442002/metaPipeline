@@ -10,9 +10,6 @@ load_dotenv()
 init_db()
 
 # Local Imports
-from processors.extract_audio import extract_audio
-from processors.watermark import add_watermark
-from functions.saveUploadFile import saveUploadFile
 from routes.userAuthRoutes import router as userAuthRouter
 from routes.extractAudioRoutes import router as audioRouter
 from routes.watermarkRoutes import router as watermarkRouter
