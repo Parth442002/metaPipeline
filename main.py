@@ -1,14 +1,26 @@
-from fastapi import FastAPI, File, UploadFile, BackgroundTasks, Depends
+from fastapi import FastAPI, File, UploadFile, BackgroundTasks
 from fastapi.responses import Response
-from connectors.s3Connector import S3_BUCKET_NAME
-from functions.s3Functions import upload_file_to_s3, download_file_from_s3
+import os
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine
 from connectors.celery import celery
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+# Local Imports
 from processors.extract_audio import extract_audio
 from processors.watermark import add_watermark
 from functions.saveUploadFile import saveUploadFile
-import os
+from routes.userAuthRoutes import router as userAuthRouter
+
 
 app = FastAPI()
+
+# ? Auth Routes
+app.include_router(userAuthRouter, prefix="/auth", tags=["auth"])
 
 
 @app.post("/extract-audio/")
