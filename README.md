@@ -1,8 +1,7 @@
 # metaPipline
 ### Audio/Video Processing Pipeline
 
-<img width="1470" alt="Screenshot 2023-07-22 at 9 24 57 AM" src="https://github.com/hackrx40/PS12-P.A.B/assets/75015574/cad07aae-34c3-4144-af83-e9d30203fc52">
-
+![Local Image](https://github.com/Parth442002/metaPipeline/blob/main/images/docs.png)
 
 
 ## Introduction💡
@@ -10,6 +9,8 @@ In this project, I employed Python with FastAPI for the backend, leveraging Post
 
 
 ## How it works
+![Local Image](https://github.com/Parth442002/metaPipeline/blob/main/images/diagram.png)
+
 This system leverages a modern tech stack to optimize file processing. The project uses FastAPI to efficiently handle incoming file requests. The use of Celery, an asynchronous task queue, allows for the parallel processing of large tasks, preventing server slowdowns. PostgreSQL, a robust relational database, manages metadata seamlessly, providing a structured and scalable solution. Docker ensures easy deployment and scalability by containerizing the application. AWS S3 serves as a reliable and scalable cloud storage solution for the final processed files, minimizing the risk of data loss. Overall, this tech stack ensures not only effective file processing but also scalability, reliability, and resource optimization.
 
 ## Performance
@@ -26,6 +27,8 @@ Our video processing service is engineered for top-notch performance and scalabi
 6. Redis
 7. SqlAlchemy
 8. Docker
+
+![Local Image](https://github.com/Parth442002/metaPipeline/blob/main/images/postman.png)
 
 ## Project Setup
 ### Running Without Docker Compose
@@ -78,4 +81,4 @@ Note: Ensure that Docker and Docker Compose are installed on your system before 
 
 ### ⚠️ Check sample.env for refenrece.
 
-[Button 1](https://link1.com) | [Button 2](https://link2.com)
+[Api Documentation](https://documenter.getpostman.com/view/14037595/2s9YXk3LcQ) | [AWS Deployment](http://ec2-13-235-70-182.ap-south-1.compute.amazonaws.com:8000/docs)
