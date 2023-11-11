@@ -8,7 +8,6 @@ import os
 
 load_dotenv()
 init_db()
-
 # Local Imports
 from routes.userAuthRoutes import router as userAuthRouter
 from routes.extractAudioRoutes import router as audioRouter
