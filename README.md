@@ -1,4 +1,4 @@
-# metaPipline 
+# metaPipline
 ### Audio/Video Processing Pipeline
 
 <img width="1470" alt="Screenshot 2023-07-22 at 9 24 57 AM" src="https://github.com/hackrx40/PS12-P.A.B/assets/75015574/cad07aae-34c3-4144-af83-e9d30203fc52">
@@ -14,9 +14,6 @@ This system leverages a modern tech stack to optimize file processing. The proje
 
 ## Performance
 Our video processing service is engineered for top-notch performance and scalability, leveraging key AWS services to optimize resource usage and ensure efficient handling of multiple concurrent requests. The architecture comprises AWS RDS for storing metadata about processed videos, providing quick retrieval and management of information. Permanent file storage is handled by AWS S3, offering scalable and durable storage with easy accessibility. The FastAPI server, Celery worker, and Redis server run on AWS EC2 instances, benefiting from the flexibility and scalability of the cloud. Auto-scaling capabilities are implemented to adapt to varying workloads, optimizing resource usage and minimizing response times. Celery is employed for handling large and time-intensive tasks asynchronously, preventing server bottlenecks and enhancing overall responsiveness. Containerization with Docker ensures consistency across environments, reducing memory footprint and startup times. Memory management strategies, including regular cleanup of temporary files and efficient database connection usage, contribute to stable and consistent performance. This high-performance architecture guarantees a seamless user experience while efficiently handling diverse workloads.
-
-
-## Database Schema
 
 
 
@@ -78,3 +75,7 @@ Our video processing service is engineered for top-notch performance and scalabi
 This will launch the FastAPI server, Celery worker, and Redis server in separate containers. You can access the services at the specified ports.
 
 Note: Ensure that Docker and Docker Compose are installed on your system before running the commands.
+
+### ⚠️ Check sample.env for refenrece.
+
+[Button 1](https://link1.com) | [Button 2](https://link2.com)
