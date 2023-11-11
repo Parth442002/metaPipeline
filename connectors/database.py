@@ -63,4 +63,6 @@ class ExtractionModel(Base):
     bitrate = Column(String)
     codec = Column(String)
     task_id = Column(String, unique=True, index=True)
+    storage_link = Column(String, nullable=True)
+
     user = relationship("UserModel", back_populates="audio_extractions")

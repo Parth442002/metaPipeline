@@ -4,6 +4,7 @@ from connectors.celery import celery, current_task
 from sqlalchemy.orm import Session
 from connectors.database import get_db, ExtractionModel
 from functions.createOutputFileName import createOutputFilePath
+from functions.s3Functions import generate_s3_object_name, upload_file_to_s3
 from datetime import datetime
 
 
@@ -41,9 +42,14 @@ def extractAudio(
         subprocess.run(command, check=True)
         print(f"Audio extracted successfully and saved at: {output_audio_path}")
 
+        # Uploading the Data to AWS S3
+        s3_object_name = generate_s3_object_name(current_task.request.id)
+        upload_file_to_s3(output_audio_path, s3_object_name)
+        print("File Upload Complete")
         # Updating Other Model Fields
         extraction_model.end_time = datetime.utcnow()
         extraction_model.status = "Success"
+        extraction_model.storage_link = s3_object_name
         db.commit()
 
         return output_audio_path
