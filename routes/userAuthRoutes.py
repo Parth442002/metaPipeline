@@ -8,7 +8,7 @@ import os
 
 load_dotenv()
 # Local Imports
-from connectors.dbConnector import get_db
+from connectors.database import get_db
 from utils.auth import *
 
 router = APIRouter()

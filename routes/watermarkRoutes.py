@@ -1,15 +1,12 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Request
-from sqlalchemy.orm import Session
-from fastapi.encoders import jsonable_encoder
-from fastapi.responses import JSONResponse
-from fastapi import FastAPI, File, UploadFile, BackgroundTasks
+from fastapi import APIRouter
+from fastapi import File, UploadFile, BackgroundTasks
 from fastapi.responses import Response
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
 # Local Imports
-from connectors.dbConnector import get_db
+from connectors.database import get_db
 from utils.auth import *
 from processors.watermark import add_watermark
 from functions.saveUploadFile import saveUploadFile

@@ -15,8 +15,6 @@ DB_PASSWORD = os.environ["DB_PASSWORD"]
 
 DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 engine = create_engine(DATABASE_URL)
-
-# Create the table if it doesn't exist
 Base = declarative_base()
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
@@ -33,5 +31,12 @@ def init_db():
     Base.metadata.create_all(bind=engine)
 
 
-# Initialize the database
 init_db()
+
+
+# Model Declaration
+class UserModel(Base):
+    __tablename__ = "users"
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String, unique=True, index=True)
+    password = Column(String)
