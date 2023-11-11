@@ -7,3 +7,4 @@ temp
 Dockerfile
 .dockerignore
 upsplit_key.pem
+compose.yml
