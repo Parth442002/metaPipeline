@@ -60,9 +60,7 @@ async def resultRoute(task_id: str):
     if task_result.ready():
         if task_result.successful():
             output_video = task_result.result
-            import pdb
 
-            pdb.set_trace()
             if output_video and os.path.exists(output_video):
                 filename = os.path.basename(output_video)
                 with open(output_video, "rb") as audio_file:
