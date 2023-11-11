@@ -1,12 +1,9 @@
 # metaPipline
 ### Audio/Video Processing Pipeline
 
-![Local Image](https://github.com/Parth442002/metaPipeline/blob/main/images/docs.png)
-
-
 ## Introduction💡
 In this project, I employed Python with FastAPI for the backend, leveraging PostgreSQL for data storage, Docker for containerization, and AWS S3 for permanent file storage. The web service, designed for video processing, utilizes Celery for handling asynchronous large tasks and integrates a Redis database. The efficient architecture ensures concurrent request handling, making the service robust and scalable. Check out the GitHub repository for the code and detailed instructions on running the service.
-
+![Local Image](https://github.com/Parth442002/metaPipeline/blob/main/images/docs.png)
 
 ## How it works
 ![Local Image](https://github.com/Parth442002/metaPipeline/blob/main/images/diagram.png)
