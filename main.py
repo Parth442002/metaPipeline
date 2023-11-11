@@ -1,9 +1,6 @@
 from fastapi import FastAPI, File, UploadFile, BackgroundTasks
 from fastapi.responses import Response
 import os
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
 from connectors.celery import celery
 from dotenv import load_dotenv
 import os
@@ -15,14 +12,18 @@ from processors.extract_audio import extract_audio
 from processors.watermark import add_watermark
 from functions.saveUploadFile import saveUploadFile
 from routes.userAuthRoutes import router as userAuthRouter
-
+from routes.extractAudioRoutes import router as audioRouter
+from routes.watermarkRoutes import router as watermarkRouter
 
 app = FastAPI()
 
 # ? Auth Routes
 app.include_router(userAuthRouter, prefix="/auth", tags=["auth"])
+app.include_router(audioRouter, prefix="/audio", tags=["audio"])
+app.include_router(watermarkRouter, prefix="/watermark", tags=["watermark"])
 
 
+"""
 @app.post("/extract-audio/")
 async def start_audio_extraction(
     video: UploadFile = File(...),
@@ -110,3 +111,5 @@ async def get_watermarked_result(task_id: str):
             return {"message": "Watermarking failed"}
     else:
         return {"message": "Task is still in progress"}
+
+"""
