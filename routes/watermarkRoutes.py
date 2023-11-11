@@ -29,6 +29,27 @@ async def allWatermarks(
         db.close()
 
 
+@router.get("/{watermark_id}")
+async def getWaterMarkInstance(
+    watermark_id: int,
+    email: UserModel = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    try:
+        watermark = (
+            db.query(WatermarkModel)
+            .filter_by(id=watermark_id, user_email=email)
+            .first()
+        )
+        if watermark is None:
+            raise HTTPException(status_code=404, detail="Extraction not found")
+        return watermark
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
+    finally:
+        db.close()
+
+
 @router.post("/")
 async def waterMarkingRoute(
     email: str = Depends(get_current_user),
